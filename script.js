@@ -127,34 +127,73 @@ document.querySelectorAll('.feature-card').forEach(card => {
     });
 });
 
-// Form submission
+// Form submission to Google Sheets
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Always prevent default to handle with JavaScript for better UX
+
+        const formAction = contactForm.getAttribute('action');
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
 
         // Get form data
         const formData = new FormData(contactForm);
         const data = Object.fromEntries(formData);
 
-        // Simulate form submission
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitButton.innerHTML;
-
+        // Show loading state
         submitButton.innerHTML = '<span>Sending...</span>';
         submitButton.disabled = true;
 
-        setTimeout(() => {
-            submitButton.innerHTML = '<span>Message Sent! ✓</span>';
-            submitButton.style.background = '#10b981';
-
+        // Check if Google Apps Script URL is configured
+        if (!formAction || formAction === '#' || formAction === 'YOUR_GOOGLE_APPS_SCRIPT_URL') {
+            // Demo mode - no backend configured
             setTimeout(() => {
-                contactForm.reset();
-                submitButton.innerHTML = originalText;
-                submitButton.style.background = '';
-                submitButton.disabled = false;
-            }, 2000);
-        }, 1500);
+                submitButton.innerHTML = '<span>Message Sent! ✓</span>';
+                submitButton.style.background = '#10b981';
+
+                setTimeout(() => {
+                    contactForm.reset();
+                    submitButton.innerHTML = originalText;
+                    submitButton.style.background = '';
+                    submitButton.disabled = false;
+                }, 2000);
+            }, 1500);
+        } else {
+            // Submit to Google Sheets via Google Apps Script
+            try {
+                const response = await fetch(formAction, {
+                    method: 'POST',
+                    mode: 'no-cors', // Google Apps Script requires no-cors for public access
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(data).toString()
+                });
+
+                // Since we're using no-cors, we can't read the response
+                // Assume success if no error is thrown
+                submitButton.innerHTML = '<span>Message Sent! ✓</span>';
+                submitButton.style.background = '#10b981';
+
+                setTimeout(() => {
+                    contactForm.reset();
+                    submitButton.innerHTML = originalText;
+                    submitButton.style.background = '';
+                    submitButton.disabled = false;
+                }, 2000);
+            } catch (error) {
+                // Handle error
+                submitButton.innerHTML = '<span>Error - Try Again</span>';
+                submitButton.style.background = '#ef4444';
+
+                setTimeout(() => {
+                    submitButton.innerHTML = originalText;
+                    submitButton.style.background = '';
+                    submitButton.disabled = false;
+                }, 3000);
+            }
+        }
     });
 }
 

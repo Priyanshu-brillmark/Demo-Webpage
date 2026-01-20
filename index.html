@@ -8,23 +8,27 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EHXTMJJDM7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EHXTMJJDM7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-  gtag('config', 'G-EHXTMJJDM7');
-</script>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MRD8CNLT');</script>
-<!-- End Google Tag Manager -->
+        gtag('config', 'G-EHXTMJJDM7');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MRD8CNLT');</script>
+    <!-- End Google Tag Manager -->
 </head>
 
 <body>
@@ -287,7 +291,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 </p>
             </div>
             <div class="contact-form-container">
-                <form class="contact-form">
+                <!-- 
+                    Google Sheets Form Configuration:
+                    1. Create a Google Sheet
+                    2. Go to Extensions > Apps Script
+                    3. Paste the script from the comment below
+                    4. Deploy as web app (Execute as: Me, Who has access: Anyone)
+                    5. Copy the web app URL and paste it in the action attribute below
+                    6. Replace YOUR_GOOGLE_APPS_SCRIPT_URL with your deployed script URL
+                    
+                    Google Apps Script Code:
+                    function doPost(e) {
+                      var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+                      var timestamp = new Date();
+                      sheet.appendRow([timestamp, e.parameter.name, e.parameter.email, e.parameter.message]);
+                      return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+                    }
+                -->
+                <form class="contact-form"
+                    action="https://script.google.com/macros/s/AKfycbxaVEVdaR5p-vddHjUVctbCKq6RMSDaJsTRs_4PbU43yD7T7iMS4I-DdFOaQUYdRgiIgQ/exec"
+                    method="POST">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -359,9 +382,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <script src="script.js"></script>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRD8CNLT"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRD8CNLT" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 </body>
 
 </html>
